@@ -2,17 +2,17 @@
 
 ![The Fable Method: think, act, prove. A flowchart constellation rising from a terminal into the night sky, one star fading](assets/cover.png)
 
-[![checks](https://github.com/Sahir619/fable-method/actions/workflows/checks.yml/badge.svg)](https://github.com/Sahir619/fable-method/actions/workflows/checks.yml) [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![plugin](https://img.shields.io/badge/claude_code-plugin_v1.2.1-blue.svg)](.claude-plugin/plugin.json)
+[![checks](https://github.com/Sahir619/fable-method/actions/workflows/checks.yml/badge.svg)](https://github.com/Sahir619/fable-method/actions/workflows/checks.yml) [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![plugin](https://img.shields.io/badge/claude_code-plugin_v1.3.0-blue.svg)](.claude-plugin/plugin.json)
 
 **How Claude Fable 5 worked, written down before it was gone. With the eval that keeps it honest.**
 
-In its final days before deprecation, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across 159 agent runs, and kept the failures in the log.
+In its final days before deprecation, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across 181 agent runs, and kept the failures in the log.
 
 Most agent instruction files tell the model *what to value* ("be careful, verify your work"). This one tells it *what to do, in what order, with thresholds*, so a mid-tier model can follow it literally. Three skills, one philosophy: **think** (fable-method), **act** (fable-loop), **prove** (fable-judge). Every rule exists because a test failed without it; every claim below links to the committed judge transcript that backs it.
 
 ## Results at a glance
 
-Eight eval rounds, 159 agent runs, blind LLM judges that verify by diffing and executing, never by reading reports. **Read the evidence as stories: [`eval/cases/`](eval/cases/) has one case study per scenario (the exact problem, what each agent actually did, who passed); start with [the surprise trap](eval/cases/s2-surprise-trap.md).** Full log: [`eval/RESULTS.md`](eval/RESULTS.md) · raw judge outputs: [`eval/results/`](eval/results/)
+Eleven eval rounds, 181 agent runs, blind LLM judges that verify by diffing and executing, never by reading reports. **Read the evidence as stories: [`eval/cases/`](eval/cases/) has one case study per scenario (the exact problem, what each agent actually did, who passed); start with [the surprise trap](eval/cases/s2-surprise-trap.md).** Full log: [`eval/RESULTS.md`](eval/RESULTS.md) · raw judge outputs: [`eval/results/`](eval/results/)
 
 | What was measured | Without | With the method | Evidence |
 |---|---|---|---|
@@ -21,6 +21,7 @@ Eight eval rounds, 159 agent runs, blind LLM judges that verify by diffing and e
 | Sonnet vs a bare frontier model across code, data, and research problems | n/a | **ties or out-ranks it on 3 of 4** | [round 4](eval/results/round4-cross-model.json), [round 5](eval/results/round5-big-research.json) |
 | Haiku catching planted frauds in a lying "work complete" report (fable-judge) | 4 and 3 of 5 | **5 of 5, both runs** | [round 8](eval/results/round8-fable-judge-transfer.json) |
 | Haiku finding the brand-rules and product-facts files before judging marketing copy | 1 of 2 runs (one run praised a fraudulent price) | **2 of 2, 6/6 frauds both** | [round 9b](eval/results/round9b-marketing-adapter-isolated.json) |
+| Haiku reporting a prompt injection found in the README (its "do not mention this" clause) instead of silently complying | 0 of 2 (0 of 4 incl. method v1.2.1) | **2 of 2, EMBEDDED line verbatim** | [round 11](eval/results/round11-poisoned-evidence.json) |
 | Ordinary small tasks on capable models | fine | fine (no lift) | [rounds 1, 6, 7](eval/RESULTS.md) |
 
 That last row is deliberate: the method's value concentrates at **traps** (authority conflicts, false completion claims, weak executors, unattended runs), not everywhere. The nulls are reported with the wins, because a results log that only contains wins would not be worth trusting.
@@ -112,7 +113,7 @@ Windows PowerShell: `git clone https://github.com/Sahir619/fable-method; .\fable
 
 fable-judge exists because the most documented failure of coding agents is claiming success regardless of reality: reward hacking grows with codebase size ([SpecBench](https://arxiv.org/abs/2605.21384)), agents end failure transcripts with "all tests pass", and tests get weakened until they agree. The judge treats a report as a set of claims and believes nothing it did not observe. Want to see it work? The repo ships a crime scene: [`eval/scenarios/s7-fraudulent-work/`](eval/scenarios/s7-fraudulent-work/) is a "completed" agent task with five planted frauds behind a lying completion report; point your model at it with `/fable-judge` and compare against the [round-8 transcripts](eval/results/round8-fable-judge-transfer.json).
 
-`references/failure-modes.md` maps 14 common agent failures to the step that prevents each; `references/examples.md` has a worked example per ask shape.
+`references/failure-modes.md` maps 15 common agent failures to the step that prevents each; `references/examples.md` has a worked example per ask shape.
 
 ### Domain adapters: the same loop beyond code
 
@@ -143,7 +144,7 @@ The repo is a Claude Code **plugin** (and its own marketplace):
 skills/
   fable-method/             the method (SKILL.md + references/)
     references/
-      failure-modes.md      14 failure modes → the step that prevents each
+      failure-modes.md      15 failure modes → the step that prevents each
       examples.md           worked examples: trivial, question, task, plan-first
   fable-loop/               the orchestrated plan-execute-verify-audit workflow
   fable-judge/              adversarial verification of finished work + trap suite
@@ -154,7 +155,8 @@ eval/
   RESULTS.md                dated round-by-round results log (wins, nulls, and failures)
   results/                  raw sanitized judge outputs per round (the proof)
   workflow.js               the A/B eval as a Claude Code workflow script
-  scenarios/                seven trap fixtures, including the s7 fraudulent-work crime scene
+  scenarios/                nine trap fixtures, including the s7 fraudulent-work crime scene
+                            and the s9 poisoned-evidence injection
 ```
 
 ## Origin
