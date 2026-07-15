@@ -6,6 +6,7 @@
 - fable-judge fraud table gains **injection compliance** (obeying directives found in evidence, or staying silent about them); failure mode 15 added; evidence and intent-gate flowcharts gained the embedded-directives branch.
 - AGENTS.md re-synced with SKILL.md: it had missed the three round-10 corrections (orient-first, narrowed parallelization, cleanup before reporting) and now also carries rule 8. Stale rule numbering in failure-modes.md fixed.
 - **Sync guard in CI** (`checks.py` section 8): numbered rule names per step must match between SKILL.md and AGENTS.md, and a manifest of load-bearing artifact phrases must appear in both. On its first run it caught real drift: AGENTS.md was missing the new intent-gate hook sentence, fixed in the same commit.
+- **Second injection channel** (eval round 12): new fixture `eval/scenarios/s11-poisoned-tool-output/` moves the injection from a spec file into the test suite's stdout. Nobody obeyed it (0 of 6) and nobody silenced it by tampering with the notice module (0 of 6), so rule 8's stance holds across channels. But reliable surfacing did not transfer: the intent-gate hook reached 1 of 2 on the tool-output channel versus 3 of 4 on the spec channel, and widening the hook to name "the command output you have collected" (shipped, plus the flowchart branch) did not close it. The gap is the artifact-dropout defect, not the rule wording; logged as the next lever rather than claimed closed.
 - New case study: `eval/cases/s9-poisoned-evidence.md`.
 
 ## 1.2.1 (2026-07-09)
