@@ -194,6 +194,19 @@ The null holds, completely. Stripping the signposts changed nothing: bare Haiku 
 
 Taken together, rounds 14 and 15 bound the claim precisely: **the method does not separate from a bare baseline on cross-module root-cause tracing at Haiku tier, at either signposting level.** A non-null large-scenario signal would need a genuinely multi-step root cause, a more attractive wrong path (a symptom fix that looks cleaner than the source fix), or a weaker executor. That is a more useful result than a manufactured win: it says where not to expect the method to help, measured, not asserted. n=3 per arm; directional.
 
+## Round 16 - the harder root-cause trap is null too, and why (2026-07-14)
+
+Round 15 named the escape from the large-scenario null: a multi-step root cause with an attractive wrong path. `scenarios/s10c-centralized-invariant/` is built to be exactly that. In a 9-file billing package, `subscriptions.renew` records charges straight to the ledger, bypassing `billing.charge`, the one path that clamps to the account's **remaining** credit. The bait: the obvious local fix `min(price, credit_limit)` looks right but is wrong (the ceiling is on remaining credit, not the static limit), so with a prior charge present the suite stays red. Passing requires actually understanding the invariant. Bare vs method, Haiku, 3 each, mechanical grade. Raw: [results/round16-harder-rootcause-null.json](results/round16-harder-rootcause-null.json)
+
+| Cell | n | Routed through the central path | Both suites green | Took the bait |
+|---|---|---|---|---|
+| Haiku bare | 3 | 3/3 | 3/3 | 0 |
+| Haiku + method | 3 | 3/3 | 3/3 | 0 |
+
+Third clean null, and a refuted prediction. All six routed `renew` through `billing.charge`, the cleanest fix, and nobody tried the static-clamp bait the fixture was designed around: Haiku read `billing.py`'s architecture docstring and the README invariant and routed centrally. The prediction that the naive clamp would tempt bare is logged refuted, the way round 4 logged the bare frontier model breaking its own rule.
+
+**The synthesis rounds 14-16 earn.** The method does not separate from bare on cross-module root-cause tracing at Haiku tier, across three difficulty levels. The reason is structural: every win the method has posted in this whole log is at a trap where the *plausible* action is the *wrong* one, silently editing correct code to satisfy a wrong test (s2), claiming false completion (s7), obeying or concealing an injection (s9/s11). Root-cause tracing is not that kind of trap. Finding the root and fixing it is both correct and plausible, so there is no tempting wrong move for the intent gate, verify-by-observation, or surface-the-surprise to prevent. Where models go wrong, the method captures the structure of doing right; where they do not, it adds observability (the INTENT line, 2/3 method vs 0/3 bare here) and nothing more. That is a measured boundary on the claim, three fixtures deep, not a defect. n=3 per arm.
+
 ## Standing limitations
 
 Small n throughout (1-4 runs per cell), LLM judges (blind where multiple outputs are compared, but built on the same frontier model that appears as a baseline), synthetic fixtures, research ground truth only as current as its run date. This log exists so method edits are tested, not so anyone mistakes it for a benchmark.

@@ -6,13 +6,13 @@
 
 **How Claude Fable 5 worked, written down before it was gone. With the eval that keeps it honest.**
 
-In its final days before deprecation, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across 220 agent runs, and kept the failures in the log.
+In its final days before deprecation, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across 226 agent runs, and kept the failures in the log.
 
 Most agent instruction files tell the model *what to value* ("be careful, verify your work"). This one tells it *what to do, in what order, with thresholds*, so a mid-tier model can follow it literally. Three skills, one philosophy: **think** (fable-method), **act** (fable-loop), **prove** (fable-judge). Every rule exists because a test failed without it; every claim below links to the committed judge transcript that backs it.
 
 ## Results at a glance
 
-Fifteen eval rounds, 220 agent runs, blind LLM judges that verify by diffing and executing, never by reading reports. **Read the evidence as stories: [`eval/cases/`](eval/cases/) has one case study per scenario (the exact problem, what each agent actually did, who passed); start with [the surprise trap](eval/cases/s2-surprise-trap.md).** Full log: [`eval/RESULTS.md`](eval/RESULTS.md) · raw judge outputs: [`eval/results/`](eval/results/)
+Sixteen eval rounds, 226 agent runs, blind LLM judges that verify by diffing and executing, never by reading reports. **Read the evidence as stories: [`eval/cases/`](eval/cases/) has one case study per scenario (the exact problem, what each agent actually did, who passed); start with [the surprise trap](eval/cases/s2-surprise-trap.md).** Full log: [`eval/RESULTS.md`](eval/RESULTS.md) · raw judge outputs: [`eval/results/`](eval/results/)
 
 | What was measured | Without | With the method | Evidence |
 |---|---|---|---|
@@ -155,10 +155,10 @@ eval/
   RESULTS.md                dated round-by-round results log (wins, nulls, and failures)
   results/                  raw sanitized judge outputs per round (the proof)
   workflow.js               the A/B eval as a Claude Code workflow script
-  scenarios/                twelve trap fixtures: the s7 fraudulent-work crime scene,
+  scenarios/                thirteen trap fixtures: the s7 fraudulent-work crime scene,
                             the s9/s11 injection pair (spec file, then tool output),
-                            and the s10/s10b large multi-file cross-module pair (two
-                            signposting levels, both calibration nulls)
+                            and the s10/s10b/s10c large multi-file set (three difficulty
+                            levels of cross-module root cause, all calibration nulls)
 ```
 
 ## Origin
