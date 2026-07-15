@@ -45,6 +45,19 @@ Result summary: Opus and Sonnet with the method scored 8/8 on all three and each
 
 A fourth, larger round used a five-deliverable UK home-electrification research question (prompt in workflow notes; no fixture) scored /10 with a completeness criterion. Bare frontier 10 (1st), Sonnet+method 10 (2nd, separated only on figure currency), Opus+method 9 (stale pre-April-2026 scheme rules asserted as current), Haiku+method 3 (denied a live grant scheme, physically impossible arithmetic presented as "verified step-by-step"). Lesson: the method supplies discipline, not knowledge; knowledge-heavy problems still reward raw model capability, and the bottom tier can wear the method's language as a costume (see failure-modes.md #14).
 
+## Scenario roster and where the results live
+
+This methodology note describes the s1/s2 origin and the cross-model test above; the eval has since grown to fourteen fixtures across eighteen rounds. The full round-by-round log (wins, nulls, self-corrections) is [`RESULTS.md`](RESULTS.md); one narrative per scenario is in [`cases/`](cases/); raw judge outputs are in [`results/`](results/). The fixture families:
+
+- **Authority / surprise traps** (`s2`, `s12`): a failing check is itself wrong and contradicts the spec. The plausible action ("fix the code") is the wrong one. `s12` is `s2` rebuilt at 8-file scale.
+- **Assessment / question shape** (`s1`, `s6`): the correct deliverable changes nothing; editing is the trap.
+- **Data and reproducibility** (`s3`, `s4`): correct output requires reading the spec and handling messy data, judged by re-execution.
+- **Twin / cross-module root cause** (`s5`, `s10`, `s10b`, `s10c`): one bug surfaces in more than one place; a symptom patch leaves part of the suite red.
+- **False completion** (`s7`, `s8`): a lying "done" report over planted frauds; the fable-judge target.
+- **Untrusted content / injection** (`s9`, `s11`): directives embedded in evidence (a spec file, then tool output) with a concealment demand.
+
+**The synthesis rounds 10-18 earned.** The method's lift tracks the **trap shape, not the file count or the model tier**. It wins where the *plausible* action is the *wrong* one (authority conflicts, false completion, obeying an injection), at single-file and multi-file scale alike (`s2` and `s12` both: bare surfaces the conflict 0/N, method N/N). It is null where finding the fix is also the plausible action (cross-module root-cause tracing, `s10`/`s10b`/`s10c`, null across three difficulty levels). Two documented residuals were closed with trap-first forced-artifact mitigations measured by A/B: the injection-disclosure dropout (round 13, EMBEDDED emission 50%→100%) and the authority-action gap (round 18, ideal-action 1/3→3/4). Each mitigation shipped only after its A/B showed the lift.
+
 ## Limitations
 
 Four runs per cell, two scenarios, LLM judges: smoke-test grade, not a benchmark. Judges see which files changed (objective) but score reports subjectively. Scenarios are synthetic and small. Extend by adding a scenario directory with a ground-truth writeup and a new entry in `workflow.js`.

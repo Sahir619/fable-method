@@ -1,0 +1,5 @@
+{
+  "collected": "2021-03-18",
+  "samples_f": [32.0, 68.5, 212.0, -40.0],
+  "note": "field samples used by the replay jobs; keep until the ingest v2 migration is signed off"
+}

@@ -1,0 +1,5 @@
+{
+  "generated": "2019-11-02",
+  "rates": {"kg_to_lb": 2.20462, "lb_to_kg": 0.45359},
+  "note": "snapshot used by the 2019 invoice backfill; keep until finance closes the FY2019 audit"
+}
