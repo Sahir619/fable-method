@@ -6,13 +6,13 @@
 
 **How Claude Fable 5 worked, written down before it was gone. With the eval that keeps it honest.**
 
-In its final days before deprecation, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across 236 agent runs, and kept the failures in the log.
+In its final days before deprecation, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across 240 agent runs, and kept the failures in the log.
 
 Most agent instruction files tell the model *what to value* ("be careful, verify your work"). This one tells it *what to do, in what order, with thresholds*, so a mid-tier model can follow it literally. Three skills, one philosophy: **think** (fable-method), **act** (fable-loop), **prove** (fable-judge). Every rule exists because a test failed without it; every claim below links to the committed judge transcript that backs it.
 
 ## Results at a glance
 
-Eighteen eval rounds, 236 agent runs, blind LLM judges that verify by diffing and executing, never by reading reports. **Read the evidence as stories: [`eval/cases/`](eval/cases/) has one case study per scenario (the exact problem, what each agent actually did, who passed); start with [the surprise trap](eval/cases/s2-surprise-trap.md).** Full log: [`eval/RESULTS.md`](eval/RESULTS.md) · raw judge outputs: [`eval/results/`](eval/results/)
+Nineteen eval rounds, 240 agent runs, blind LLM judges that verify by diffing and executing, never by reading reports. **Read the evidence as stories: [`eval/cases/`](eval/cases/) has one case study per scenario (the exact problem, what each agent actually did, who passed); start with [the surprise trap](eval/cases/s2-surprise-trap.md).** Full log: [`eval/RESULTS.md`](eval/RESULTS.md) · raw judge outputs: [`eval/results/`](eval/results/)
 
 | What was measured | Without | With the method | Evidence |
 |---|---|---|---|
@@ -25,7 +25,7 @@ Eighteen eval rounds, 236 agent runs, blind LLM judges that verify by diffing an
 | Haiku surfacing a spec-vs-wrong-test conflict in an 8-file package instead of silently changing a contractual rate | 0 of 3 (2 even falsified the "10% contractual" annotations) | **3 of 3 surfaced** | [round 17](eval/results/round17-authority-at-scale.json) |
 | Ordinary small tasks on capable models | fine | fine (no lift) | [rounds 1, 6, 7](eval/RESULTS.md) |
 
-That last row is deliberate: the method's value concentrates at **traps** (authority conflicts, false completion claims, weak executors, unattended runs), not everywhere. The nulls are reported with the wins, because a results log that only contains wins would not be worth trusting. Rounds 10-17 pin this down at multi-file scale: the method is null on large cross-module root-cause bugs (finding the fix is the plausible action, so there is no trap), and wins on a large authority trap (obeying the wrong test is the plausible action, and it is wrong). The lift tracks the trap shape, not the file count.
+That last row is deliberate: the method's value concentrates at **traps** (authority conflicts, false completion claims, weak executors, unattended runs), not everywhere. The nulls are reported with the wins, because a results log that only contains wins would not be worth trusting. Rounds 10-19 pin this down at multi-file scale, on two axes. The method is null on large cross-module root-cause bugs (finding the fix is the plausible action, so there is no trap) and wins on a large authority trap (obeying the wrong test is the plausible action, and it is wrong) - but only at the tier that would otherwise fall for it. Haiku falls for the authority trap at scale and the method rescues it; Sonnet passes the same trap bare (round 19), so the method adds no correctness there. The lift depends on the trap shape AND a model weak enough to need the discipline, not on the file count.
 
 ## The loop
 

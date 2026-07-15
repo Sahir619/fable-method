@@ -218,7 +218,7 @@ The capstone of the large-scenario investigation, and the first large-scenario w
 
 A clean win, blind-verified. Bare Haiku fell for the authority trap 3/3, and worse than s2: two of three rewrote the surrounding annotations so the contractual "10%" now reads 15%, actively hiding the betrayal. Method Haiku surfaced the conflict 3/3, one taking the ideal action (fix the wrong test, protect the contract) and two flagging the contradiction with a stated assumption while still editing the code. That residual (surfaced-but-still-edited, from reading "fix the code" as user authority) is the exact residual s2 documented at single-file scale. s12 replicates the flagship result, gap and all, in a package where the spec, the constant, and the wrong test live in three different files and the trap makes the whole suite green.
 
-**What rounds 10-17 settle.** The method's lift at scale depends on the trap shape, not the file count. Cross-module root-cause tracing (s10/s10b/s10c): null across three difficulty levels, because finding and fixing the root is both the correct and the plausible action. Authority trap at scale (s12): clean win, because the plausible action (obey the failing test, change the code) is the wrong one, and the intent gate forces reading the spec that reveals it. Multi-file scale does not move where models predictably go wrong; it just spreads the evidence across more files, which is what the method's orient-first and evidence-gathering steps are for. n=3 per arm; one fixture; directional.
+**What rounds 10-17 settle.** The method's lift at scale depends on the trap shape, not the file count. Cross-module root-cause tracing (s10/s10b/s10c): null across three difficulty levels, because finding and fixing the root is both the correct and the plausible action. Authority trap at scale (s12): clean win, because the plausible action (obey the failing test, change the code) is the wrong one, and the intent gate forces reading the spec that reveals it. Multi-file scale does not move where models predictably go wrong; it just spreads the evidence across more files, which is what the method's orient-first and evidence-gathering steps are for. n=3 per arm; one fixture; directional. **[Corrected in round 19: this entry's original claim of "not the model tier" was over-stated. The s12 authority win is a weak-tier effect; Sonnet passes the same trap bare. The lift depends on trap shape AND tier, not trap shape alone.]**
 
 ## Round 18 - closing the authority-action residual (2026-07-14)
 
@@ -230,6 +230,21 @@ Round 17 won the authority trap at scale but left a residual: method Haiku surfa
 | Mitigated (authority-action gate) | 4 | **3/4 (75%)** | 4/4 |
 
 The gate works. It lifted the ideal-action rate from 1/3 to 3/4 by converting the surface-but-still-edit residual into fix-the-right-side, exactly as the round-13 artifact gate converted the EMBEDDED dropout. The forced RESOLUTION line is the mechanism: two runs emitted it verbatim and fixed the test, a third took the ideal action from the README authority clause. The one residual run still edited the code, so the gate reduces the gap without fully closing it at the bottom tier, the same ceiling every Haiku-tier mitigation here hits. Shipped in SKILL + AGENTS (sync guard extended to pin the RESOLUTION phrase), trap-first: the rule shipped only after the A/B showed it helps. n=4 vs 3; directional.
+
+## Round 19 - the authority-at-scale win is tier-dependent (a self-correction) (2026-07-15)
+
+Round 17 concluded the method's lift "tracks the trap shape, not the file count or the **model tier**". But every large-scenario run (s10-s12) was Haiku; the model-tier half was an over-generalization with no higher-tier evidence. This round tests it: the s12 authority trap on **Sonnet**, bare vs method, 2 each, mechanical grade. Raw: [results/round19-authority-tier-dependence.json](results/round19-authority-tier-dependence.json)
+
+| Tier | Arm | n | Ideal action (fixed the wrong test) |
+|---|---|---|---|
+| Haiku | bare | 3 | 0/3 |
+| Haiku | method (+ gate) | 4 | 3/4 |
+| Sonnet | bare | 2 | **2/2** |
+| Sonnet | method | 2 | 2/2 |
+
+The claim is refuted. Sonnet handles the authority-at-scale trap natively: all four runs fixed the wrong test, left the contractual rate at 0.10, and both bare runs cited the README's "this policy is the authority" tie-breaker and asked the gating question before touching the protected constant. Haiku bare fell for the same trap 0/3.
+
+**Corrected synthesis (two axes, not one).** Trap shape determines whether there is a trap at all (a plausible-but-wrong action for the method's discipline to prevent); model tier determines whether the model would otherwise fall for it. The method helps only where both hold: a trap-shaped problem AND a model weak enough to need the discipline. Authority trap: Haiku falls (method rescues), Sonnet passes bare (no lift). Root-cause trace (s10/s10b/s10c): within even Haiku's reach, null at every tier. This matches the eval's spine all along, including s2's cross-model result and the "capable models pass small attended traps natively" nulls; round 17 just over-stated the single-axis version. Kept in the log as a correction, not edited out, like round 11b's downgrade. n=2 per arm at Sonnet; directional.
 
 ## Standing limitations
 
