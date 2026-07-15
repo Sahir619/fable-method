@@ -1,0 +1,23 @@
+.site-header {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* The nav should be a centered horizontal row (see README). */
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;   /* stacks vertically -- wrong per the spec */
+}
+
+.nav li a {
+  text-decoration: none;
+  color: #222;
+}
