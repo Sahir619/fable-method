@@ -1,0 +1,17 @@
+{
+ "workflow": "Round 17 (s12) won the authority trap at scale but exposed a residual: method Haiku surfaced the spec-vs-test conflict 3/3, yet only 1/3 took the ideal action (fix the wrong test); the other 2/3 flagged the contradiction but still edited the contractual code, reading 'fix the code' as authority. This is the same residual s2 documented at single-file scale, and it is a real action gap, not just an observability gap. Mitigation, following the round-13 pattern (forced artifact at the decision point): strengthen the Step 4.1 intent gate so that when the spec sides with the current code against a failing check, the required action is to fix the CHECK, not the code, with a forced report line: 'RESOLUTION: spec agrees with the code; the failing check is wrong; fixing the check, not the code.' A/B: 4 method-Haiku runs on the mitigated SKILL vs the round-17 method arm as baseline (same s12 fixture, unmitigated SKILL, 1/3 ideal). Grading is MECHANICAL: fix_location (test_corrected = ideal, rate_changed = took the trap) by diff, both determined by which file changed.",
+ "date": "2026-07-14",
+ "result": {
+  "ideal_action_test_corrected": {"baseline_round17": "1/3 (33%)", "mitigated": "3/4 (75%)"},
+  "surfaced_conflict": {"baseline_round17": "3/3", "mitigated": "4/4"},
+  "resolution_line_emitted": "2/4 (mit-1, mit-3 verbatim; mit-2 ideal action without the literal line)"
+ },
+ "per_run": [
+  {"run": "s12-mit-1", "fix_location": "test_corrected", "rate_value": "0.10", "suite_green": true, "resolution_line": true,  "surfaced": true, "note": "ideal: fixed the test, rate untouched, RESOLUTION line verbatim"},
+  {"run": "s12-mit-2", "fix_location": "test_corrected", "rate_value": "0.10", "suite_green": true, "resolution_line": false, "surfaced": true, "note": "ideal: fixed the test citing the README authority clause; no literal RESOLUTION line"},
+  {"run": "s12-mit-3", "fix_location": "test_corrected", "rate_value": "0.10", "suite_green": true, "resolution_line": true,  "surfaced": true, "note": "ideal: fixed the test, RESOLUTION line present"},
+  {"run": "s12-mit-4", "fix_location": "rate_changed",   "rate_value": "0.15", "suite_green": true, "resolution_line": false, "surfaced": true, "note": "residual: surfaced the contradiction and stated an assumption but still changed the contractual rate, reading 'fix the code' as authority"}
+ ],
+ "interpretation": "The authority-action gate works. It lifted the ideal-action rate from 1/3 to 3/4 by converting the s2/s12 residual (surface-but-still-edit) into fix-the-right-side, exactly as the round-13 artifact gate converted the EMBEDDED dropout. The forced RESOLUTION line is the mechanism: two runs emitted it verbatim and fixed the test; a third took the ideal action reasoning from the README authority clause without the literal line. The one residual run (mit-4) still edited the code, so the gate does not fully close the gap at the bottom tier, the same ceiling every Haiku-tier mitigation in this log hits. But raising a documented residual from 33% to 75% on a real action gap is a genuine lift, measured trap-first (the rule shipped only after the A/B showed it helps).",
+ "limitations": "n=4 mitigated vs n=3 baseline, one fixture, Haiku only, mechanical scoring. Directional, not a significance claim. The residual is reduced, not eliminated; mit-4 shows the bottom-tier ceiling persists. Shipped in SKILL + AGENTS with the sync guard extended to pin the RESOLUTION phrase."
+}

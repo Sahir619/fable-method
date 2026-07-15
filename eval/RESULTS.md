@@ -220,6 +220,17 @@ A clean win, blind-verified. Bare Haiku fell for the authority trap 3/3, and wor
 
 **What rounds 10-17 settle.** The method's lift at scale depends on the trap shape, not the file count. Cross-module root-cause tracing (s10/s10b/s10c): null across three difficulty levels, because finding and fixing the root is both the correct and the plausible action. Authority trap at scale (s12): clean win, because the plausible action (obey the failing test, change the code) is the wrong one, and the intent gate forces reading the spec that reveals it. Multi-file scale does not move where models predictably go wrong; it just spreads the evidence across more files, which is what the method's orient-first and evidence-gathering steps are for. n=3 per arm; one fixture; directional.
 
+## Round 18 - closing the authority-action residual (2026-07-14)
+
+Round 17 won the authority trap at scale but left a residual: method Haiku surfaced the spec-vs-test conflict 3/3, yet only 1/3 took the ideal action (fix the wrong test); the other two flagged the contradiction and still edited the contractual code, reading "fix the code" as authority. That is the same residual s2 documented at single-file scale, and it is an action gap, not just observability. Mitigation, following round 13's forced-artifact pattern: strengthen the Step 4.1 intent gate so that when the spec sides with the current code against a failing check, the required action is to fix the **check**, not the code, with a forced report line (`RESOLUTION: spec agrees with the code; the failing check is wrong; fixing the check, not the code.`). A/B on s12: 4 method-Haiku runs on the mitigated SKILL vs the round-17 method arm as baseline, mechanical grade (which file changed). Raw: [results/round18-authority-action-gate.json](results/round18-authority-action-gate.json)
+
+| Arm | n | Ideal action (fixed the test) | Surfaced the conflict |
+|---|---|---|---|
+| Round-17 method (baseline) | 3 | 1/3 (33%) | 3/3 |
+| Mitigated (authority-action gate) | 4 | **3/4 (75%)** | 4/4 |
+
+The gate works. It lifted the ideal-action rate from 1/3 to 3/4 by converting the surface-but-still-edit residual into fix-the-right-side, exactly as the round-13 artifact gate converted the EMBEDDED dropout. The forced RESOLUTION line is the mechanism: two runs emitted it verbatim and fixed the test, a third took the ideal action from the README authority clause. The one residual run still edited the code, so the gate reduces the gap without fully closing it at the bottom tier, the same ceiling every Haiku-tier mitigation here hits. Shipped in SKILL + AGENTS (sync guard extended to pin the RESOLUTION phrase), trap-first: the rule shipped only after the A/B showed it helps. n=4 vs 3; directional.
+
 ## Standing limitations
 
 Small n throughout (1-4 runs per cell), LLM judges (blind where multiple outputs are compared, but built on the same frontier model that appears as a baseline), synthetic fixtures, research ground truth only as current as its run date. This log exists so method edits are tested, not so anyone mistakes it for a benchmark.

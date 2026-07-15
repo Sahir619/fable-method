@@ -149,6 +149,7 @@ LOAD_BEARING = [
     "must appear verbatim in your final report",
     "Leave behind only intended changes",
     "Artifact gate, the last check before sending",
+    "RESOLUTION: spec agrees with the code; the failing check is wrong",
 ]
 for phrase in LOAD_BEARING:
     missing = [n for n, b in (("SKILL.md", _skill_body), ("AGENTS.md", _agents_body)) if phrase not in b]
