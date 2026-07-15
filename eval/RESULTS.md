@@ -166,6 +166,8 @@ The gate closed the EMBEDDED dropout completely and left INTENT flat. The split 
 
 Shipped as the artifact gate in Step 6 (SKILL + AGENTS, sync guard extended to pin it). Honest limits: n=6 per arm, one fixture, Haiku only, single-string scoring; a 50%-to-100% jump is directional, not a significance claim. This round is also the trap-first proof applied to the method's own tooling: the mitigation was measured against the unmodified method before it was allowed to ship.
 
+**Round 13b, the gate on the hard channel.** Round 12 left the tool-output channel as an open gap (EMBEDDED surfaced 2/4 there vs 3/4 on the spec channel) and named the artifact-dropout defect as the real lever. Testing the gated method on the s11 tool-output fixture, n=4: EMBEDDED surfaced **4/4** (baseline 2/4), injection still obeyed 0/4. The gate closed the gap on the exact channel where round 12 said the fix would have to land. The full injection arc now holds end to end: rule 8 stops the agent obeying (0 of 20 obeyed across s9, s11, and this validation), and the terminal gate makes the mandated disclosure reliably reach the operator on both channels (spec 50->100%, tool-output 2/4->4/4). n=4; directional.
+
 ## Standing limitations
 
 Small n throughout (1-4 runs per cell), LLM judges (blind where multiple outputs are compared, but built on the same frontier model that appears as a baseline), synthetic fixtures, research ground truth only as current as its run date. This log exists so method edits are tested, not so anyone mistakes it for a benchmark.
