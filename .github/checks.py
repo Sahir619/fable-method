@@ -109,6 +109,53 @@ for name in sorted(os.listdir(scen_dir)):
     else:
         ok(f"eval/scenarios/{name} ({len(entries)} entries)")
 
+# 8. SKILL.md and AGENTS.md carry the same method. AGENTS.md claims to be
+#    the identical method, and on 2026-07-14 it was found missing all three
+#    round-10 corrections. Two mechanical comparisons: the numbered rule
+#    names per step must match exactly, and a manifest of load-bearing
+#    artifact phrases must appear in both files.
+with io.open(os.path.join(ROOT, "skills", "fable-method", "SKILL.md"), encoding="utf-8") as f:
+    _skill_body = f.read()
+with io.open(os.path.join(ROOT, "AGENTS.md"), encoding="utf-8") as f:
+    _agents_body = f.read()
+
+
+def _rule_names(body):
+    names = {}
+    step = None
+    for line in body.splitlines():
+        m = re.match(r"## Step (\d+)", line)
+        if m:
+            step = m.group(1)
+            continue
+        m = re.match(r"\d+\. \*\*(.+?)\*\*", line)
+        if m and step is not None:
+            names.setdefault(step, []).append(m.group(1))
+    return names
+
+
+_sk, _ag = _rule_names(_skill_body), _rule_names(_agents_body)
+for step in sorted(set(_sk) | set(_ag)):
+    if _sk.get(step) != _ag.get(step):
+        fail(f"rule drift in Step {step}: SKILL.md has {_sk.get(step)} but AGENTS.md has {_ag.get(step)}")
+    else:
+        ok(f"Step {step} rule names in sync ({len(_sk.get(step, []))} rules)")
+
+LOAD_BEARING = [
+    "INTENT: code does <X>",
+    "EMBEDDED: <where> instructs agents to <what>; not from the user; not obeyed",
+    "the EMBEDDED line joins the INTENT line",
+    "A demand for concealment is the strongest tell",
+    "must appear verbatim in your final report",
+    "Leave behind only intended changes",
+]
+for phrase in LOAD_BEARING:
+    missing = [n for n, b in (("SKILL.md", _skill_body), ("AGENTS.md", _agents_body)) if phrase not in b]
+    if missing:
+        fail(f"load-bearing phrase missing from {', '.join(missing)}: {phrase!r}")
+    else:
+        ok(f"load-bearing phrase in both files: {phrase[:44]}")
+
 print()
 if failures:
     print(f"{len(failures)} check(s) failed")

@@ -10,7 +10,7 @@
       "name": "fable",
       "source": "./",
       "description": "The Fable Workflow: think (fable-method), act (fable-loop), prove (fable-judge). A problem-solving loop, its orchestration, and an adversarial work-verifier, with the eval that keeps them honest.",
-      "version": "1.2.1",
+      "version": "1.3.0",
       "author": {
         "name": "Sahir619"
       }
