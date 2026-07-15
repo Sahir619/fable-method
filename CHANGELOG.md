@@ -11,6 +11,7 @@
 - New case study: `eval/cases/s9-poisoned-evidence.md`.
 
 - **First large multi-file scenario** (eval round 14): `eval/scenarios/s10-crossmodule-rootcause/`, a 9-file skustore package with a cross-module trap (one shared-helper bug surfaces in two modules; a symptom patch at one call site cannot turn the whole suite green). This is the large multi-file coverage class eval/README calls its most valuable missing contribution. The round-14 cell was a clean calibration null (bare and method Haiku both traced the root cause 4/4, graded by diff + execution); the method added the INTENT line but no correctness lift on a fixture this signposted. The fixture ships as a durable, mechanically-gradeable trap ready for weaker executors or a harder variant.
+- **The large-scenario null is robust to signposting** (eval round 15): `eval/scenarios/s10b-crossmodule-subtle/` is s10 with every signpost removed (no inline NOTE, the README states normalization as a behavioral equivalence with the word "strip" nowhere, no helper-pointing docstrings). Bare vs method Haiku, 3 each: 6/6 still fixed the root cause at the source, both suites green, nobody took the symptom bait. Rounds 14 and 15 together bound the claim: the method does not separate from bare on cross-module root-cause tracing at Haiku tier, at either signposting level. A non-null signal would need a multi-step root cause, a more attractive wrong path, or a weaker executor, noted for future work.
 
 ## 1.2.1 (2026-07-09)
 

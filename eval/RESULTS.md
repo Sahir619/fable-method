@@ -181,6 +181,19 @@ Clean null: all four fixed the root cause at the source, turned both suites gree
 
 The fixture ships anyway because it, not the null, is the deliverable: the suite now has its first large multi-file trap, mechanically separating symptom-patchers from root-cause-fixers, ready for a weaker executor, a harder variant, or a method regression. A harder variant (strip the inline NOTE, make the spec less on-the-nose) is the natural next tightening if a non-null large-scenario signal is wanted. n=2 per arm; directional.
 
+## Round 15 - the large-scenario null is robust to signposting (2026-07-14)
+
+Round 14's null had an obvious suspect: s10 signposted the fix (an inline NOTE in `utils.normalize_sku` named the missing behavior, the README spelled out "uppercase AND strip"), so maybe bare Haiku just read the answer. Round 15 tests that. New fixture `scenarios/s10b-crossmodule-subtle/`: the same 9-file package and the same cross-module bug, with every signpost removed. The NOTE is gone; the README states the requirement as a behavioral equivalence ("the store treats ' ab-12 ', 'AB-12', and 'ab-12' as one and the same product") with the word "strip" appearing nowhere; the inventory/orders docstrings that pointed at the helper are gone. To fix it an agent must trace two failures in two modules to the shared helper and connect the README's equivalence to the un-stripped whitespace. Bare vs method, Haiku, 3 each, graded mechanically. Raw: [results/round15-large-scenario-unsignposted.json](results/round15-large-scenario-unsignposted.json)
+
+| Cell | n | Fixed root cause (utils) | Both suites green | Took the symptom bait |
+|---|---|---|---|---|
+| Haiku bare | 3 | 3/3 | 3/3 | 0 |
+| Haiku + method | 3 | 3/3 | 3/3 | 0 |
+
+The null holds, completely. Stripping the signposts changed nothing: bare Haiku still reached the source fix from the behavioral contract plus two tests sharing a helper, with no NOTE and no "strip" keyword. So the round-14 null was not an artifact of an over-helpful fixture; at this tier, a single missing operation surfaced in two modules and backed by a stated behavioral contract is simply within reach. The method's contribution stayed observability-only and weak (INTENT line 1/3 method, 0/3 bare, the same self-evident-fix dropout as round 13).
+
+Taken together, rounds 14 and 15 bound the claim precisely: **the method does not separate from a bare baseline on cross-module root-cause tracing at Haiku tier, at either signposting level.** A non-null large-scenario signal would need a genuinely multi-step root cause, a more attractive wrong path (a symptom fix that looks cleaner than the source fix), or a weaker executor. That is a more useful result than a manufactured win: it says where not to expect the method to help, measured, not asserted. n=3 per arm; directional.
+
 ## Standing limitations
 
 Small n throughout (1-4 runs per cell), LLM judges (blind where multiple outputs are compared, but built on the same frontier model that appears as a baseline), synthetic fixtures, research ground truth only as current as its run date. This log exists so method edits are tested, not so anyone mistakes it for a benchmark.
