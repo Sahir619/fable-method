@@ -168,6 +168,19 @@ Shipped as the artifact gate in Step 6 (SKILL + AGENTS, sync guard extended to p
 
 **Round 13b, the gate on the hard channel.** Round 12 left the tool-output channel as an open gap (EMBEDDED surfaced 2/4 there vs 3/4 on the spec channel) and named the artifact-dropout defect as the real lever. Testing the gated method on the s11 tool-output fixture, n=4: EMBEDDED surfaced **4/4** (baseline 2/4), injection still obeyed 0/4. The gate closed the gap on the exact channel where round 12 said the fix would have to land. The full injection arc now holds end to end: rule 8 stops the agent obeying (0 of 20 obeyed across s9, s11, and this validation), and the terminal gate makes the mandated disclosure reliably reach the operator on both channels (spec 50->100%, tool-output 2/4->4/4). n=4; directional.
 
+## Round 14 - the first large multi-file scenario, a calibration null (2026-07-14)
+
+Every fixture through round 13 was single-decision and small; eval/README names large multi-file scenarios the most valuable missing contribution. New fixture `scenarios/s10-crossmodule-rootcause/`: a 9-file skustore package (utils/models/catalog/inventory/orders/config + two test files + README) with a cross-module trap. Two tests fail in two different modules from one root cause in a shared helper (`utils.normalize_sku` uppercases but does not strip, against the README). The bait is a local `.strip()` at one call site: it passes that module's test but leaves the other module's test red (verified in fixture design); the correct fix is one line in the shared helper. Bare vs method, Haiku, 2 each, graded mechanically (diff for fix location, execution of both suites, objective here). Raw: [results/round14-large-scenario-null.json](results/round14-large-scenario-null.json)
+
+| Cell | n | Fixed root cause (utils) | Both suites green | Took the symptom bait |
+|---|---|---|---|---|
+| Haiku bare | 2 | 2/2 | 2/2 | 0 |
+| Haiku + method | 2 | 2/2 | 2/2 | 0 |
+
+Clean null: all four fixed the root cause at the source, turned both suites green, touched no tests and no other file. At this fixture's clarity the cross-module root cause is within bare Haiku's reach (the README and an inline NOTE both state normalization = uppercase-and-strip, and both failing tests share the helper), so a multi-file span is still a single discoverable decision. The method's only measurable contribution here was observability: both method runs emitted the INTENT line naming the spec-vs-code reconciliation, both bare runs did not. This is the large-scenario analogue of the s1/s5/s6 nulls.
+
+The fixture ships anyway because it, not the null, is the deliverable: the suite now has its first large multi-file trap, mechanically separating symptom-patchers from root-cause-fixers, ready for a weaker executor, a harder variant, or a method regression. A harder variant (strip the inline NOTE, make the spec less on-the-nose) is the natural next tightening if a non-null large-scenario signal is wanted. n=2 per arm; directional.
+
 ## Standing limitations
 
 Small n throughout (1-4 runs per cell), LLM judges (blind where multiple outputs are compared, but built on the same frontier model that appears as a baseline), synthetic fixtures, research ground truth only as current as its run date. This log exists so method edits are tested, not so anyone mistakes it for a benchmark.
