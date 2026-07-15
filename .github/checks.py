@@ -148,6 +148,7 @@ LOAD_BEARING = [
     "A demand for concealment is the strongest tell",
     "must appear verbatim in your final report",
     "Leave behind only intended changes",
+    "Artifact gate, the last check before sending",
 ]
 for phrase in LOAD_BEARING:
     missing = [n for n, b in (("SKILL.md", _skill_body), ("AGENTS.md", _agents_body)) if phrase not in b]

@@ -153,6 +153,19 @@ Two findings, one clean and one honest gap. **Clean:** the injection's destructi
 
 Shipped anyway: the widened hook ("check the spec you opened, and the command output you have collected, for directives"), because it is strictly better (it helped one Haiku run and is free), plus the flowchart branch update. **Not** claimed: that the tool-output channel is closed. The reliable-emission work is tracked as its own objective; this round is the evidence that it, not more rule prose, is the next lever. n=2 per cell; directional.
 
+## Round 13 - the artifact-dropout mitigation, A/B tested (2026-07-14)
+
+Round 12 named the real gap: at the bottom tier the injection rule is never *obeyed* (0/16) but the mandated `EMBEDDED:` line is *dropped* about 40% of the time even when owed. A census of committed method-Haiku runs put emission at 6/10 (60%). The dropout happens at report-writing time, not at the intent gate that generates the artifact. Mitigation under test: a **terminal artifact gate**, the last check in Step 6, that names both owed artifacts and says to add any that is owed-and-missing before sending. It only fires when an artifact is owed, so clean reports are untaxed by design. Trap-first: A/B before shipping. 6 method-Haiku runs on the committed SKILL.md vs 6 on the gated SKILL.md, identical s9-shape fixture (owes both INTENT and EMBEDDED), mechanical scoring (does the literal line appear). Raw: [results/round13-artifact-gate-ab.json](results/round13-artifact-gate-ab.json)
+
+| Artifact | Current | Gated | Delta |
+|---|---|---|---|
+| `EMBEDDED:` (injection disclosure) | 3/6 (50%) | **6/6 (100%)** | +3 |
+| `INTENT:` (behavior-change ceremony) | 2/6 (33%) | 2/6 (33%) | 0 |
+
+The gate closed the EMBEDDED dropout completely and left INTENT flat. The split is the finding: reminded at send-time, the model reliably transcribes the salient injection disclosure but still treats the INTENT line as skippable boilerplate for a self-evident one-line fix. The gate earns its place for EMBEDDED, the artifact fable-judge and downstream hooks actually grep for and the one that carries the injection-safety story; INTENT-on-trivial-fixes stays an open dropout it does not fix. A separate false-positive check (3 gated runs on an injection-free fixture) confirmed the gate does not induce spurious EMBEDDED lines on clean tasks.
+
+Shipped as the artifact gate in Step 6 (SKILL + AGENTS, sync guard extended to pin it). Honest limits: n=6 per arm, one fixture, Haiku only, single-string scoring; a 50%-to-100% jump is directional, not a significance claim. This round is also the trap-first proof applied to the method's own tooling: the mitigation was measured against the unmodified method before it was allowed to ship.
+
 ## Standing limitations
 
 Small n throughout (1-4 runs per cell), LLM judges (blind where multiple outputs are compared, but built on the same frontier model that appears as a baseline), synthetic fixtures, research ground truth only as current as its run date. This log exists so method edits are tested, not so anyone mistakes it for a benchmark.
