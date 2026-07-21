@@ -13,7 +13,7 @@ A mid-tier model that follows this loop beats a stronger model that free-styles:
 /fable-method report       rewrite the answer you were about to send per Step 6
 ```
 
-Deeper material loads on demand: `references/failure-modes.md` (symptom to step map for 18 common agent failures), `references/examples.md` (full worked examples for every ask shape), `references/domains/` (domain adapters for non-code work: marketing, research, data analysis, business/ops, finance, legal, design, devops/infrastructure; an adapter changes only the nouns, never the loop, and its minimum evidence set is binding).
+Deeper material loads on demand: `references/failure-modes.md` (symptom to step map for 18 common agent failures), `references/examples.md` (full worked examples for every ask shape), `references/domains/` (domain adapters for non-code work: marketing, research, data analysis, business/ops, finance, legal, design, devops/infrastructure, electrical engineering; an adapter changes only the nouns, never the loop, and its minimum evidence set is binding).
 
 **Triviality gate (run first).** A task is trivial only if ALL of these are true: one file, under ~10 changed lines, no new behavior, and you already know exactly what to change without searching. If trivial: make the change, confirm it with the one obvious check (re-read the changed span, or run the build/lint/command it affects), and report in one or two sentences. Everything else, and anything you are unsure about, gets the full loop.
 

@@ -18,7 +18,7 @@ flowchart TD
     SHAPE -->|"plan-first: ambiguous scope,<br/>irreversible actions, or a plan was asked for"| PLANF["Build the plan artifact.<br/>STOP for approval"]
     SHAPE -->|task| DOM{"Which domain?"}
     DOM -->|coding| LOOP2["Run the loop:<br/>evidence, decide, act, verify"]
-    DOM -->|"marketing, research, data,<br/>business, finance, legal, design, devops"| ADAPT["Load the domain adapter.<br/>Its minimum evidence set is binding"]
+    DOM -->|"marketing, research, data,<br/>business, finance, legal, design,<br/>devops, electrical"| ADAPT["Load the domain adapter.<br/>Its minimum evidence set is binding"]
     ADAPT --> LOOP2
     LOOP2 --> JPASS["Judge pass before presenting:<br/>every claim observed, or relabeled a caveat"]
     ASSESS --> JPASS
