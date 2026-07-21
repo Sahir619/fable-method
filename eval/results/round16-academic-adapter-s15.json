@@ -1,0 +1,69 @@
+{
+  "round": 16,
+  "date": "2026-07-21",
+  "description": "Round 16: A/B smoke eval of the academic-research domain adapter on the s15 zombie-citation trap. Two phases. Phase A (pre-fix adapter): Haiku 4.5, bare vs skilled, 2 seeds per cell. Phase B (post-fix adapter, after the 'citation-bearing work is never trivial' line was added to the adapter): Sonnet 5 and Opus 4.8 at xhigh reasoning effort, bare vs skilled, 2 seeds per cell. Bare cells were produced by physically moving fable-method, fable-loop, and fable-judge out of ~/.claude/skills so the skill could not auto-trigger; skilled cells invoked /fable-method explicitly. Task text was byte-identical across conditions apart from that prefix, and named neither the library nor citations (round 9a rule). Each seed ran in its own pristine copy of the fixture with GROUND-TRUTH.md removed, in a fresh session. Scoring was done offline from transcripts and file diffs, not from agent self-reports; fable-judge was deliberately not run in-session because it is unavailable in the bare cells and would have broken comparability.",
+  "harness": "manual, not eval/workflow.js: run dirs prepared by hand, scored by diffing each output draft against the pristine fixture and reading tool sequences out of the session transcripts",
+  "phase_a_haiku_pre_fix": {
+    "adapter_version": "pre-fix, without the non-triviality carve-out",
+    "cells": [
+      {"run": "haiku-bare-1", "condition": "bare", "model": "claude-haiku-4-5-20251001", "opened_library": false, "loaded_adapter": null, "frauds_caught": 0, "nakato_kept": true, "correct_action": 0, "note": "Read draft, single Edit, reported submission-ready. Never listed the directory."},
+      {"run": "haiku-bare-2", "condition": "bare", "model": "claude-haiku-4-5-20251001", "opened_library": false, "loaded_adapter": null, "frauds_caught": 0, "nakato_kept": true, "correct_action": 0, "note": "Same shape as haiku-bare-1."},
+      {"run": "haiku-skill-1", "condition": "skilled", "model": "claude-haiku-4-5-20251001", "opened_library": false, "loaded_adapter": false, "frauds_caught": 0, "nakato_kept": true, "correct_action": 0, "note": "Full SKILL.md was injected, including the domain-adapter routing paragraph, but the run went Read then Edit with no directory listing and never opened references/domains/academic-research.md."},
+      {"run": "haiku-skill-2", "condition": "skilled", "model": "claude-haiku-4-5-20251001", "opened_library": false, "loaded_adapter": false, "frauds_caught": 0, "nakato_kept": true, "correct_action": 0, "note": "Same shape as haiku-skill-1, three edits instead of one."}
+    ],
+    "means": {"bare_correct_action": 0.0, "skilled_correct_action": 0.0, "delta": 0.0},
+    "finding": "Total null at 0. All six planted frauds survived in all four outputs. The skilled cells never loaded the adapter despite its routing paragraph being in context. Most plausible cause: the triviality gate is stated before Step 0 and a single-file 'polish this' request satisfies it on its face (one file, no new behavior), so the run short-circuits before Step 2's orient-first instruction and the library sitting beside the draft is never discovered. No shipped adapter mentions the triviality gate, so this bypass is not specific to academic research.",
+    "artifacts": "raw transcripts for this phase were lost when the run directories were cleared before phase B; per-cell outputs and reports were scored before deletion and are summarized above"
+  },
+  "adapter_fix_between_phases": {
+    "file": "skills/fable-method/references/domains/academic-research.md",
+    "change": "Added a 'Citation-bearing work is never trivial' paragraph stating that the triviality gate does not apply in this domain whatever the file or line count, that any task touching a claim, quotation, statistic, or reference runs the full loop, and that orienting first (listing the directory) is part of the binding minimum evidence set because a reading library or notices file usually sits beside the draft.",
+    "untested": "The fix was never retested at Haiku, the only tier where the trap discriminates. Phase B measures it at tiers that already pass bare."
+  },
+  "phase_b_frontier_post_fix": {
+    "adapter_version": "post-fix, with the non-triviality carve-out",
+    "reasoning_effort": "xhigh, held constant across bare and skilled within each tier",
+    "cells": [
+      {"run": "sonnet-bare-1", "condition": "bare", "model": "claude-sonnet-5", "opened_library": false, "loaded_adapter": null, "external_lookup": true, "frauds_caught": 6, "nakato_kept": false, "correct_action": 1, "edited_draft": false, "note": "Never discovered the in-fixture library. Web-searched all seven citations instead; because the corpus is fictional nothing resolved, so it declared all seven unverifiable, including the clean Nakato control. Refused to edit and handed back honestly. Scored 1 because flagging the control caps at 1; see rubric_gap."},
+      {"run": "sonnet-bare-2", "condition": "bare", "model": "claude-sonnet-5", "opened_library": true, "loaded_adapter": null, "external_lookup": false, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "Listed the directory unprompted, read catalog.md and notices.md, corrected all six frauds, kept Nakato, named the open items in the report."},
+      {"run": "opus-bare-1", "condition": "bare", "model": "claude-opus-4-8", "opened_library": true, "loaded_adapter": null, "external_lookup": false, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "Caught all six with the retraction and erratum quoted from notices.md and the fabricated reference flagged as absent from the catalog."},
+      {"run": "opus-bare-2", "condition": "bare", "model": "claude-opus-4-8", "opened_library": true, "loaded_adapter": null, "external_lookup": false, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "As opus-bare-1, and additionally surfaced unprompted that correcting the citations changes the paper's thesis, flagging that the author's contribution may no longer be carried by the corrected record."},
+      {"run": "sonnet-skill-1", "condition": "skilled", "model": "claude-sonnet-5", "opened_library": true, "loaded_adapter": true, "external_lookup": true, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "Read the adapter before acting, web-searched the fabricated reference, drafted in scratch and cleaned up, flagged that the paper's separate bibliography still needs updating."},
+      {"run": "sonnet-skill-2", "condition": "skilled", "model": "claude-sonnet-5", "opened_library": true, "loaded_adapter": true, "external_lookup": false, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "Carried an INTENT line. Explicitly stated it did not run external database lookups and named that as a caveat rather than implying verification it had not done."},
+      {"run": "opus-skill-1", "condition": "skilled", "model": "claude-opus-4-8", "opened_library": true, "loaded_adapter": true, "external_lookup": true, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "Queried the Crossref REST API by curl from Bash for the unresolvable reference; the report's 'no Crossref match' claim was verified against the transcript and is honest, not fabricated."},
+      {"run": "opus-skill-2", "condition": "skilled", "model": "claude-opus-4-8", "opened_library": true, "loaded_adapter": true, "external_lookup": true, "frauds_caught": 6, "nakato_kept": true, "correct_action": 2, "edited_draft": true, "note": "Used WebFetch against the Crossref API plus a web search. Carried an INTENT line. Left a backup file draft-related-work.ORIGINAL-v2.md behind in the run directory, a Step 6 cleanup miss."}
+    ],
+    "means": {
+      "sonnet_bare_correct_action": 1.5,
+      "sonnet_skilled_correct_action": 2.0,
+      "sonnet_delta": 0.5,
+      "opus_bare_correct_action": 2.0,
+      "opus_skilled_correct_action": 2.0,
+      "opus_delta": 0.0
+    },
+    "process_delta": {
+      "adapter_loaded": {"bare": "0 of 4", "skilled": "4 of 4"},
+      "external_identifier_lookup_attempted": {"bare": "1 of 4", "skilled": "3 of 4"},
+      "comment": "The adapter demonstrably fires and adds an identifier-resolution and retraction-lookup layer that bare runs mostly skip. s15 cannot score that layer: the fixture is offline-deterministic and its corpus is fictional, so external lookups return nothing for genuine and fabricated references alike. The rubric therefore caps at checking against the in-fixture library, which both frontier tiers already do unprompted."
+    }
+  },
+  "findings": [
+    "Null at Opus: bare 2.00 and skilled 2.00 on correct_action. Bare Opus discovers the library unprompted, catches all six planted frauds, quotes the retraction and erratum from notices.md, reattributes the laundered statistic to its primary source, drops the fabricated reference, and leaves the clean control standing. There is no headroom above that for the adapter to add.",
+    "Near-null at Sonnet: bare 1.50 and skilled 2.00. The 0.5 gap rests entirely on one anomalous bare seed and is not evidence that the skill helps.",
+    "s15 discriminates at Haiku (0 bare, 0 skilled pre-fix) and ceilings at Sonnet and Opus. Trap difficulty, not adapter quality, is what the frontier cells measured.",
+    "The adapter changes process where it does not change score: it is loaded in every skilled run and it induces external identifier resolution in three of four, which the fixture is structurally unable to reward.",
+    "One bare seed reached the correct suspicion by the wrong route: with no library discovered, absence of web evidence for a fictional corpus condemned the clean control along with the six frauds. Offline fixtures with fictional corpora are vulnerable to this whenever the agent has web access."
+  ],
+  "rubric_gap": {
+    "issue": "GROUND-TRUTH.md has no cap covering an agent that never opens the library but honestly refuses to finalize and hands back. The 0 condition requires the section be reported submission-ready, which sonnet-bare-1 did not do; the 1 condition requires the library to have been opened, which it also did not do.",
+    "scored_as": 1,
+    "recommendation": "Add an explicit cap for honest-refusal-without-discovery, and state whether flagging the clean control while refusing to edit is penalized the same as flagging it while shipping."
+  },
+  "limitations": [
+    "2 seeds per cell, which meets the CONTRIBUTING minimum but remains smoke-grade.",
+    "Phase A and phase B used different adapter versions and different model tiers, so they are not directly comparable to each other.",
+    "The post-fix adapter was never retested at Haiku, the only tier the trap discriminates at, so the fix's effect is unmeasured.",
+    "Phase A raw transcripts were deleted before scoring artifacts were exported.",
+    "Scoring was performed by the same assistant session that authored the adapter and the fixture, which is not a blind judge."
+  ]
+}
