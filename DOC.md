@@ -16,7 +16,7 @@ does not make a model smarter; it makes it disciplined and honest. That is a
 narrow claim, and it is the whole point: procedural failure is most of what
 goes wrong with agents, especially cheap ones.
 
-Three skills, one idea:
+Five skills, one idea:
 
 - **fable-method** - the loop (think). Classify the ask, define done, gather
   evidence, decide, act surgically, verify by observation, report outcome-first.
@@ -26,6 +26,11 @@ Three skills, one idea:
   set of claims and re-runs every one; believes nothing it did not observe.
 - **fable-domain** - the maker (grow). Turns the loop into a trusted skill for
   a new domain.
+- **fable-orchestrate** - the fleet layer (direct). Runs the method across many
+  agents at once: self-contained dispatch contracts, explicit model tiering, and a
+  controller backstop that re-runs the gates before trusting any executor's "done".
+  All 14 of its rules are exercised by armed traps (s15-s20, eval rounds 16-19),
+  floors published beside wins; its Evidence status carries the full accounting.
 
 Every rule exists because a test failed without it. The whole `eval/` directory
 is the receipts, wins and failures both.

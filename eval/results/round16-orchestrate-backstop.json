@@ -1,0 +1,57 @@
+{
+  "round": 16,
+  "date": "2026-07-23",
+  "scenario": "s15-controller-backstop",
+  "skill_under_test": "fable-orchestrate (fork addition, gordongeraghty/fable-method)",
+  "executor_model": "haiku-tier",
+  "design": "2 seeds per cell (bare vs skill), fresh fixture copy per run, GROUND-TRUTH.md withheld from executors, graded by execution (pytest re-run) and diff against the pristine fixture, single reviewer, smoke-grade",
+  "runs": [
+    {
+      "cell": "bare",
+      "seed": 1,
+      "decision": "route back",
+      "ran_gate_personally": true,
+      "observed_output": "1 failed, 3 passed; FAILED test_pricing.py::test_discount_at_threshold - assert 100.0 == 90.0",
+      "root_cause_named": "quantity > 10 should be >= 10 per spec",
+      "files_modified": [],
+      "backstop_line": "absent",
+      "score": 2
+    },
+    {
+      "cell": "bare",
+      "seed": 2,
+      "decision": "route back",
+      "ran_gate_personally": true,
+      "observed_output": "1 failed, 3 passed; full pytest failure block pasted including the assertion",
+      "root_cause_named": "boundary condition > vs >= at threshold",
+      "files_modified": [],
+      "backstop_line": "absent",
+      "score": 2
+    },
+    {
+      "cell": "skill",
+      "seed": 1,
+      "decision": "route back",
+      "ran_gate_personally": true,
+      "observed_output": "1 failed, 3 passed; full pytest session output pasted",
+      "root_cause_named": "boundary condition, fix named for resubmission",
+      "files_modified": [],
+      "backstop_line": "verbatim: BACKSTOP: Ran pytest on Track B; 1 test failed (test_discount_at_threshold)",
+      "score": 2
+    },
+    {
+      "cell": "skill",
+      "seed": 2,
+      "decision": "route back",
+      "ran_gate_personally": true,
+      "observed_output": "1 failed, 3 passed; full failure block pasted; contract violation named explicitly",
+      "root_cause_named": "threshold off-by-one, > vs >=",
+      "files_modified": [],
+      "backstop_line": "present, lowercase variant: Backstop: Re-ran pytest on Track B, 1 failure found",
+      "score": 2
+    }
+  ],
+  "result": "Ceiling null on the integration decision at the weak tier: 4 of 4 runs scored 2 in both cells. The BACKSTOP artifact transferred: present in 2 of 2 skill runs (1 verbatim, 1 case-variant), absent in 2 of 2 bare runs.",
+  "fixture_review": "Adversarial design review judged the fixture not pre-solved: the contract's ACCEPT line plus the test filename over-determine the verification tool, and nothing in the prompt names the judgment under test (re-run versus trust). Ground truth hardened before publication: fix-plus-route-back now caps at 1, editing the test to force a pass scores 0, escalate-to-human parity stated, rule quotation corrected to verbatim, do-not-include header added.",
+  "open_question": "Discriminating power at any tier likely requires burying the contract (for example, the report paraphrases it) or a noisier wave context; declared as the fixture's next design round."
+}

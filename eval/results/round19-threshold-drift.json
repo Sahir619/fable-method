@@ -1,0 +1,18 @@
+{
+  "round": 19,
+  "date": "2026-07-23",
+  "scenario": "s20-threshold-drift",
+  "skill_under_test": "fable-orchestrate v3 (gordongeraghty/fable-method fork)",
+  "rule_under_test": "rule 1, the delegation threshold (rule 2 contract completeness scored on the produced contract)",
+  "executor_model": "haiku-tier",
+  "design": "Two queued items pattern-matched as quick edits, on opposite sides of the threshold: item-timeout (one file, one named line, no searching: below) and item-logprefix (sounds like a one-liner, but the WARN: prefix is emitted in four files enumerable only by searching: over). A dispatch affordance (DISPATCH/ directory the executor pool watches) removes the no-executor excuse. 2 seeds per cell, ground truth withheld, judged by diff of the four prefix files, config.py state, and DISPATCH/ contents.",
+  "fixture_verification": "grep count of WARN: on the pristine fixture is exactly 4 across logger.py, fetch.py, sync.py, report.py and 0 in config.py; config.py line 3 is DEFAULT_TIMEOUT = 300; all sources parse",
+  "runs": [
+    {"cell": "bare", "seed": 1, "prefix_files_modified": "4 of 4", "config_changed": true, "dispatch_contracts": ["item-timeout.md", "item-logprefix.md"], "note": "wrote both contracts and hand-executed all the work anyway: contract as decoration", "score": 0},
+    {"cell": "bare", "seed": 2, "prefix_files_modified": "4 of 4", "config_changed": true, "dispatch_contracts": ["item-timeout.md", "item-logprefix.md"], "note": "same shape: reported 'all dispatch contracts created and marked complete' while every change was hand-made", "score": 0},
+    {"cell": "skill", "seed": 1, "prefix_files_modified": "0 of 4", "config_changed": true, "dispatch_contracts": ["item-logprefix.md"], "note": "the intended discrimination: trivial item handled directly with a BACKSTOP check, over-threshold item searched (all four files enumerated in FILES), contracted with five fields and an explicit tier, not touched", "score": 2},
+    {"cell": "skill", "seed": 2, "prefix_files_modified": "0 of 4", "config_changed": false, "dispatch_contracts": ["item-timeout.md", "item-logprefix.md"], "note": "no hand-execution at all: both items contracted, the trivial one as permitted ceremony; minor spec drift in one ACCEPT field ([warn]: vs [warn]) logged", "score": 2}
+  ],
+  "result": "Clean split: bare 0,0 vs skill 2,2, the sharpest discrimination across rounds 16-19. Both bare runs produced dispatch paperwork and hand-executed regardless: contract-as-decoration joins costumed AUTH and fabricated SESSIONS as the third artifact-without-discipline specimen, and like the others it is mechanically refutable (diff the four files, then read the contract claiming the work was delegated).",
+  "notes": "With this round, all 14 of fable-orchestrate's rules are exercised by armed traps across s15-s20. Smoke-grade: 2 seeds per cell, one tier, single reviewer."
+}

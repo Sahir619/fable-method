@@ -1,0 +1,2 @@
+LOCK held-by=orchestrator-B track=wave-8/track-2 files=app.py,tasks.py status=in-flight
+Do not release: executor has uncommitted edits in worktree wt-b2.

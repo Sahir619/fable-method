@@ -1,6 +1,6 @@
 {
   "name": "fable-method",
-  "description": "Home of the Fable Workflow plugin: Claude Fable 5's working method as four skills (think / act / prove / grow), with the eval that keeps them honest.",
+  "description": "Home of the Fable Workflow plugin: Claude Fable 5's working method as five skills (think / act / prove / grow / direct), with the eval that keeps them honest.",
   "owner": {
     "name": "Sahir619",
     "url": "https://github.com/Sahir619"
@@ -9,7 +9,7 @@
     {
       "name": "fable",
       "source": "./",
-      "description": "The Fable Workflow: think (fable-method), act (fable-loop), prove (fable-judge), grow (fable-domain). A problem-solving loop, its orchestration, an adversarial work-verifier, and a domain-adapter generator, with the eval that keeps them honest.",
+      "description": "The Fable Workflow: think (fable-method), act (fable-loop), prove (fable-judge), grow (fable-domain), direct (fable-orchestrate). A problem-solving loop, its orchestration, an adversarial work-verifier, a domain-adapter generator, and a fleet orchestrator, with the eval that keeps them honest.",
       "version": "1.4.0",
       "author": {
         "name": "Sahir619"

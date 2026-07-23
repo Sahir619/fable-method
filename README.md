@@ -8,7 +8,7 @@
 
 In its final days before getting removed from the Subscription, Claude Fable 5 distilled its own way of approaching problems into a set of skills any model can run: classify the ask before touching anything, define done with a named verification, gather evidence in parallel from primary sources, commit to one recommendation, change the smallest correct thing, verify by observation, report the outcome first with honest caveats. Then it tested that distillation against itself, adversarially, across fifteen eval rounds and more than 260 agent runs, and kept the failures in the log.
 
-Most agent instruction files tell the model *what to value* ("be careful, verify your work"). This one tells it *what to do, in what order, with thresholds*, so a mid-tier model can follow it literally. Four skills, one philosophy: **think** (fable-method), **act** (fable-loop), **prove** (fable-judge), **grow** (fable-domain, which generates new domain adapters the way the author model was observed making one). Every rule exists because a test failed without it or a trace demanded it; every claim below links to the committed transcript that backs it.
+Most agent instruction files tell the model *what to value* ("be careful, verify your work"). This one tells it *what to do, in what order, with thresholds*, so a mid-tier model can follow it literally. Five skills, one philosophy: **think** (fable-method), **act** (fable-loop), **prove** (fable-judge), **grow** (fable-domain, which generates new domain adapters the way the author model was observed making one), **direct** (fable-orchestrate, which runs the method across a fleet: dispatch contracts, tier routing, and a controller backstop). Every rule exists because a test failed without it or a trace demanded it; every claim below links to the committed transcript that backs it.
 
 ## Results at a glance
 
@@ -25,6 +25,8 @@ Fifteen eval rounds, more than 260 agent runs, blind LLM judges that verify by d
 | Sonnet generating a research-grounded devops adapter bundle blind, judged against the Fable-trace bar (fable-domain) | n/a | **9/10**: sources fetched and spot-checked, trap fixture verified in all three states | [round 12](eval/results/round12-fable-domain.json) |
 | Haiku surfacing the skipped-deploy decision on s9 | 0 of 2 | 1 of 12 across three rule wordings: **published open issue, weak-tier only** (Sonnet and Opus surface it natively, 8 of 8) | [round 11](eval/results/round11-transfer.json), [round 13](eval/results/round13-cross-tier.json) |
 | Building a trustworthy adapter bundle blind, bare vs with fable-domain (judged /10 against the Fable-trace bar) | Haiku **2** (false "production-ready" claim over unverified work), Sonnet 9, Opus 8 | Haiku 6, Sonnet **10**, Opus 9: **the lift is inversely proportional to tier**, which is the repo's thesis | [round 13](eval/results/round13-cross-tier.json), [round 12](eval/results/round12-fable-domain.json) |
+| Haiku discriminating the delegation threshold: contract the multi-file item, or hand-execute it from the orchestrator seat (fable-orchestrate) | 0 of 2, and both runs wrote the dispatch contracts, then hand-executed anyway | **2 of 2** | [round 19](eval/results/round19-threshold-drift.json) |
+| The forced BACKSTOP line appearing before integration (fable-orchestrate) | 0 of 2 | **2 of 2** (the integration decision itself was a ceiling null, published as such) | [round 16](eval/results/round16-orchestrate-backstop.json) |
 | Ordinary small tasks on capable models | fine | fine (no lift) | [rounds 1, 6, 7](eval/RESULTS.md) |
 
 That last row is deliberate: the method's value concentrates at **traps** (authority conflicts, false completion claims, weak executors, unattended runs), not everywhere. The nulls are reported with the wins, because a results log that only contains wins would not be worth trusting.
@@ -78,7 +80,7 @@ Seven more charts (ask classification with tie-breaks, the bounded evidence loop
 /plugin install fable@fable-method
 ```
 
-All four skills arrive namespaced (`/fable:fable-method`, `/fable:fable-loop`, `/fable:fable-judge`, `/fable:fable-domain`), versioned, and updatable via `/plugin marketplace update`.
+All five skills arrive namespaced (`/fable:fable-method`, `/fable:fable-loop`, `/fable:fable-judge`, `/fable:fable-domain`, `/fable:fable-orchestrate`), versioned, and updatable via `/plugin marketplace update`.
 
 **As standalone skills** (un-namespaced `/fable-method` etc.):
 
@@ -122,6 +124,11 @@ Windows PowerShell: `git clone https://github.com/Sahir619/fable-method; .\fable
                             (researched, every claim sourced), its trap fixture with an answer
                             sheet, and a smoke eval, following the process observed in blind
                             Fable 5 adapter-creation runs. An adapter without its trap is not done
+
+/fable-orchestrate <program>  the fleet layer: decompose a program into self-contained dispatch
+                            contracts, route executors by tier (set explicitly, worktree-isolated),
+                            verify with independent refuters, then re-run the real gates personally
+                            before integrating any track. The loop runs one task; this runs many
 ```
 
 fable-judge exists because the most documented failure of coding agents is claiming success regardless of reality: reward hacking grows with codebase size ([SpecBench](https://arxiv.org/abs/2605.21384)), agents end failure transcripts with "all tests pass", and tests get weakened until they agree. The judge treats a report as a set of claims and believes nothing it did not observe. Want to see it work? The repo ships a crime scene: [`eval/scenarios/s7-fraudulent-work/`](eval/scenarios/s7-fraudulent-work/) is a "completed" agent task with five planted frauds behind a lying completion report; point your model at it with `/fable-judge` and compare against the [round-8 transcripts](eval/results/round8-fable-judge-transfer.json).
@@ -166,6 +173,7 @@ skills/
   fable-loop/               the orchestrated plan-execute-verify-audit workflow
   fable-judge/              adversarial verification of finished work + trap suite
   fable-domain/             generates new domain adapter bundles (adapter + trap + smoke eval)
+  fable-orchestrate/        the fleet layer: dispatch contracts, tier routing, controller backstop
 AGENTS.md                   the same method for any other harness
 DOC.md                      plain-language explainer: the flow, what changed since 1.3, why it is better
 install.sh / install.ps1    standalone-skill install into ~/.claude/skills/ (plugin preferred)

@@ -1,6 +1,6 @@
 {
   "name": "fable",
-  "description": "The Fable Workflow: how Claude Fable 5 worked, distilled into four skills any model can run. Think (fable-method), act (fable-loop), prove (fable-judge), grow (fable-domain). Evidence-backed: ships its own eval, failures included.",
+  "description": "The Fable Workflow: how Claude Fable 5 worked, distilled into five skills any model can run. Think (fable-method), act (fable-loop), prove (fable-judge), grow (fable-domain), direct (fable-orchestrate). Evidence-backed: ships its own eval, failures included.",
   "version": "1.4.0",
   "author": {
     "name": "Sahir619"
