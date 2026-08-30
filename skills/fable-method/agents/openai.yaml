@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fable Method"
+  short_description: "Structured evidence-first problem solving"
+  default_prompt: "Use $fable-method to solve this task with explicit evidence and verification."

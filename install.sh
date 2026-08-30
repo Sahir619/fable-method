@@ -1,16 +1,56 @@
 #!/usr/bin/env bash
-# Manual installer (macOS / Linux / Git Bash) for users who prefer standalone
-# skills over the plugin. Plugin install (recommended): inside Claude Code run
-#   /plugin marketplace add Sahir619/fable-method
-#   /plugin install fable@fable-method
+# Standalone skill installer for macOS, Linux, and Git Bash.
+# Usage: ./install.sh [--claude|--codex] [--dest PATH]
 set -euo pipefail
+
 src="$(cd "$(dirname "$0")" && pwd)"
-dst="$HOME/.claude/skills"
+target="--claude"
+destination=""
 
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --claude|--codex)
+      target="$1"
+      shift
+      ;;
+    --dest)
+      if [[ $# -lt 2 ]]; then
+        echo "--dest requires a path" >&2
+        exit 2
+      fi
+      destination="$2"
+      shift 2
+      ;;
+    --help|-h)
+      echo "Usage: $0 [--claude|--codex] [--dest PATH]"
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      echo "Usage: $0 [--claude|--codex] [--dest PATH]" >&2
+      exit 2
+      ;;
+  esac
+done
+
+case "$target" in
+  --claude)
+    default_destination="$HOME/.claude/skills"
+    product="Claude Code"
+    ;;
+  --codex)
+    default_destination="${CODEX_HOME:-$HOME/.codex}/skills"
+    product="Codex"
+    ;;
+esac
+
+dst="${destination:-$default_destination}"
+
+skills=(fable-method fable-loop fable-judge fable-domain)
 mkdir -p "$dst"
-cp -r "$src/skills/fable-method" "$dst/"
-cp -r "$src/skills/fable-loop" "$dst/"
-cp -r "$src/skills/fable-judge" "$dst/"
+for skill in "${skills[@]}"; do
+  cp -r "$src/skills/$skill" "$dst/"
+done
 
-echo "Installed: fable-method, fable-loop, fable-judge -> $dst"
-echo "Try it: open Claude Code and type /fable-judge after any agent claims work is done."
+echo "Installed: ${skills[*]} -> $dst"
+echo "The skills will be available to $product in a new turn."

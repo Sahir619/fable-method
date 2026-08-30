@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fable Domain"
+  short_description: "Build a researched domain workflow"
+  default_prompt: "Use $fable-domain to build a researched workflow and trap-based evaluation for this domain."

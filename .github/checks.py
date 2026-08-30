@@ -48,7 +48,7 @@ try:
 except Exception as e:
     fail(f"version check: {e}")
 
-# 3. All four skills exist with frontmatter name + description
+# 3. All four skills exist with frontmatter name + description and Codex metadata
 for skill in ["fable-method", "fable-loop", "fable-judge", "fable-domain"]:
     path = os.path.join(ROOT, "skills", skill, "SKILL.md")
     try:
@@ -60,6 +60,19 @@ for skill in ["fable-method", "fable-loop", "fable-judge", "fable-domain"]:
             ok(f"skills/{skill}/SKILL.md frontmatter valid")
     except Exception as e:
         fail(f"skills/{skill}/SKILL.md: {e}")
+
+    metadata_path = os.path.join(ROOT, "skills", skill, "agents", "openai.yaml")
+    try:
+        with io.open(metadata_path, encoding="utf-8") as f:
+            metadata = f.read()
+        required = ["interface:", "display_name:", "short_description:", "default_prompt:"]
+        missing = [field for field in required if field not in metadata]
+        if missing or f"${skill}" not in metadata:
+            fail(f"skills/{skill}/agents/openai.yaml: missing fields or skill prompt")
+        else:
+            ok(f"skills/{skill}/agents/openai.yaml valid")
+    except Exception as e:
+        fail(f"skills/{skill}/agents/openai.yaml: {e}")
 
 # 4. Domain adapters all carry a binding minimum evidence set and a fraud table
 domains_dir = os.path.join(ROOT, "skills", "fable-method", "references", "domains")

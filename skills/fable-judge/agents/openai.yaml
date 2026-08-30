@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fable Judge"
+  short_description: "Verify completed work against evidence"
+  default_prompt: "Use $fable-judge to verify the completed work and report an evidence-based verdict."

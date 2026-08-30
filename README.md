@@ -80,15 +80,27 @@ Seven more charts (ask classification with tie-breaks, the bounded evidence loop
 
 All four skills arrive namespaced (`/fable:fable-method`, `/fable:fable-loop`, `/fable:fable-judge`, `/fable:fable-domain`), versioned, and updatable via `/plugin marketplace update`.
 
-**As standalone skills** (un-namespaced `/fable-method` etc.):
+**As standalone Claude Code skills** (un-namespaced `/fable-method` etc.):
 
 ```bash
-git clone https://github.com/Sahir619/fable-method && bash fable-method/install.sh
+git clone https://github.com/Sahir619/fable-method && bash fable-method/install.sh --claude
 ```
 
-Windows PowerShell: `git clone https://github.com/Sahir619/fable-method; .\fable-method\install.ps1`
+Windows PowerShell: `git clone https://github.com/Sahir619/fable-method; .\fable-method\install.ps1 -Target claude`
 
-**Any other agent** (Codex, Cursor, aider, a raw system prompt): use [AGENTS.md](AGENTS.md), the identical method without Claude-specific frontmatter.
+**As Codex skills:**
+
+```bash
+git clone https://github.com/Sahir619/fable-method && bash fable-method/install.sh --codex
+```
+
+Windows PowerShell: `git clone https://github.com/Sahir619/fable-method; .\fable-method\install.ps1 -Target codex`
+
+All four skills are installed into `$CODEX_HOME/skills`, or `~/.codex/skills` when `CODEX_HOME` is unset. They are available to Codex in a new turn.
+
+Both installers accept a custom destination for isolated or project-specific installs: `--dest PATH` in Bash or `-Destination PATH` in PowerShell.
+
+**Any other agent** (Cursor, aider, a raw system prompt): use [AGENTS.md](AGENTS.md), the identical method without product-specific frontmatter.
 
 **Make it proactive (recommended).** Skills fire best when nobody has to remember them. Add to your global `~/.claude/CLAUDE.md`:
 
@@ -166,9 +178,10 @@ skills/
   fable-loop/               the orchestrated plan-execute-verify-audit workflow
   fable-judge/              adversarial verification of finished work + trap suite
   fable-domain/             generates new domain adapter bundles (adapter + trap + smoke eval)
+  */agents/openai.yaml      optional Codex display metadata for each skill
 AGENTS.md                   the same method for any other harness
 DOC.md                      plain-language explainer: the flow, what changed since 1.3, why it is better
-install.sh / install.ps1    standalone-skill install into ~/.claude/skills/ (plugin preferred)
+install.sh / install.ps1    standalone install into Claude Code or Codex skill directories
 eval/
   README.md                 methodology + how to reproduce
   RESULTS.md                dated round-by-round results log (wins, nulls, and failures)

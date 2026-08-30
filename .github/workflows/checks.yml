@@ -13,3 +13,24 @@ jobs:
           python-version: "3.12"
       - name: Validate manifests, skills, adapters, evidence, and style
         run: python .github/checks.py
+      - name: Smoke-test Bash installers
+        run: |
+          claude_home="$(mktemp -d)"
+          bash install.sh --claude --dest "$claude_home/skills"
+          test -f "$claude_home/skills/fable-domain/SKILL.md"
+          codex_home="$(mktemp -d)"
+          CODEX_HOME="$codex_home" bash install.sh --codex
+          test -f "$codex_home/skills/fable-domain/SKILL.md"
+          test -f "$codex_home/skills/fable-method/agents/openai.yaml"
+      - name: Smoke-test PowerShell Codex installer
+        shell: pwsh
+        run: |
+          $claudeSkills = Join-Path $env:RUNNER_TEMP "fable-claude-skills"
+          $codexSkills = Join-Path $env:RUNNER_TEMP "fable-codex-skills"
+          ./install.ps1 -Target claude -Destination $claudeSkills
+          ./install.ps1 -Target codex -Destination $codexSkills
+          foreach ($destination in @($claudeSkills, $codexSkills)) {
+            if (-not (Test-Path (Join-Path $destination "fable-domain/SKILL.md"))) {
+              throw "fable-domain was not installed into $destination"
+            }
+          }
