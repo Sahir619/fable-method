@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fable Loop"
+  short_description: "Run an end-to-end verified workflow"
+  default_prompt: "Use $fable-loop to plan, execute, and verify this task end to end."

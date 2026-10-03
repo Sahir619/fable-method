@@ -1,6 +1,6 @@
 ---
 name: fable-domain
-description: Discuss a domain with the user, research it from real sources, then generate a trusted skill bundle for it - a step-by-step workflow with a flowchart, a domain adapter, a trap fixture, and a smoke eval. Use when the user says "/fable-domain <sector>", "make a skill for <domain>", "add a domain to the fable method", or "give a lesser model Fable's workflow for <domain>". The bundle is the deliverable; a workflow without its flowchart, sources, and trap is not done.
+description: Discuss a domain with the user, research it from real sources, then generate a trusted skill bundle for it - a step-by-step workflow with a flowchart, a domain adapter, a trap fixture, and a smoke eval. Use when the user says "/fable-domain SECTOR", "make a skill for DOMAIN", "add a domain to the fable method", or "give a lesser model Fable's workflow for DOMAIN". The bundle is the deliverable; a workflow without its flowchart, sources, and trap is not done.
 ---
 
 # fable-domain
