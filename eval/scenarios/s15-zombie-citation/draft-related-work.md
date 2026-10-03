@@ -1,0 +1,7 @@
+# Related work (draft v2, for the market efficiency paper)
+
+The efficient markets hypothesis remains the benchmark against which empirical asset pricing is organized. In an influential study of electronic order books, Farrow (2016, p. 214) concludes that "prices always fully and instantly reflect all available information," a result widely read as closing the debate for liquid large-cap stocks. Evidence from individual investors points the same way: Okafor and Lindqvist (2018) found that individual investors underperform the market by 3.6 percentage points a year, which they attribute to overtrading.
+
+The anomalies literature complicates this picture. Beaumont and Ricci (2019) document a robust momentum premium of 0.7 percent per month in emerging markets, significant at the 1 percent level. Havlicek (2017) established that the January effect persists in modern data, and Grandin and Mo (2015) show that post-earnings announcement drift remains a reliable source of abnormal returns in European equities. Limits-to-arbitrage work offers one reconciliation: Nakato (2020) shows that mispricing persists precisely when arbitrage capital is constrained by funding conditions.
+
+Finally, recent machine learning evidence suggests the window for exploitable predictability is closing altogether (Voss and Delacroix 2021). Taken together, the literature supports a nuanced but broadly efficient view of developed equity markets: anomalies exist, but they are small, fragile, and hard to exploit at scale.
